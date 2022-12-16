@@ -1,0 +1,7 @@
+[theme]
+
+primaryColor="#ff7f7f"  # 感情ラベル
+backgroundColor="#f9fcff"  # 
+secondaryBackgroundColor="#bbdbf3"  # sidebar
+textColor="#00000"  # 
+font="sans serif"
