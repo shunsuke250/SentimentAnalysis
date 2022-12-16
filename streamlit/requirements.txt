@@ -6,4 +6,3 @@ tdqm == 0.0.1
 mecab
 pymlask
 namedtupled == 0.3.3
-mecab-python3~=1.0.5
