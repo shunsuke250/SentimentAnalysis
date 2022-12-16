@@ -1,4 +1,5 @@
 import tweepy
+import streamlit as st
 import csv
 from collections import namedtuple
 from datetime import timedelta # 日本時間に直すために使用
@@ -6,12 +7,13 @@ from datetime import timedelta # 日本時間に直すために使用
 search_word = ''
 fetch_date = ''
 
+
 def fetch_tweet():
 
-    api_key = '08EY1iYiElcFYCGm9VeMSSsv6'
-    api_secret = 'suPnmU16T4qHrFbImsbwWp7EiSpXTcM07gx9Mszdy4jrLb6AGa'
-    access_token = '1516673302332604416-jZ1Iv5WHkZawhYukhTRTaO4OSBJtoP'
-    access_secret = 'ipLHWytQABIjSg80593ELY2gMoQqdWCFI4GShF8SJLtut'
+    api_key = st.secrets.TwitterAPI.api_key
+    api_secret = st.secrets.TwitterAPI.api_secret
+    access_token = st.secrets.TwitterAPI.access_token
+    access_secret = st.secrets.TwitterAPI.access_secret
 
     auth = tweepy.OAuthHandler(api_key,api_secret)
     auth.set_access_token(access_token,access_secret)
