@@ -3,3 +3,4 @@ streamlit == 1.14.0
 plotly == 5.9.0
 pandas == 1.4.4
 tdqm == 0.0.1
+Mlask == 0.2
