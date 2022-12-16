@@ -7,7 +7,6 @@ from datetime import timedelta # 日本時間に直すために使用
 search_word = ''
 fetch_date = ''
 
-
 def fetch_tweet():
 
     api_key = st.secrets.TwitterAPI.api_key
