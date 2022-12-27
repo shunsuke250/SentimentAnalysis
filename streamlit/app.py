@@ -8,6 +8,13 @@ import TextSplit
 import UploadedFile
 import plotly.figure_factory as ff
 import plotly.graph_objects as go
+import altair as alt
+import numpy as np
+
+
+
+## github streamlit
+
 
 # ML-Askの10種類の感情
 EMOTION_LIST = ['喜', '安', '好', '昂', '怖', '驚', '怒', '厭', '恥', '哀']
@@ -18,25 +25,36 @@ if 'negaposi_count' not in st.session_state:
 
 if '10_emotion' not in st.session_state:
     st.session_state['10_emotion'] = []
+# 日別の感情変化で利用
+if 'negaposi_array' not in st.session_state:
+    st.session_state['negaposi_array'] = []
+# 日別の感情変化で利用
+if '10_emotion_array' not in st.session_state:
+    st.session_state['10_emotion_array'] = []
+# 日別の感情変化で利用
+if 'file_name' not in st.session_state:
+    st.session_state['file_name'] = []
+if 'selected_emotion' not in st.session_state:
+    st.session_state['selected_emotion'] = []
 
-# セッション変数の値をリセットするボタン
+
+# セッション変数の値をリセット
 def reset_clicks():
     st.session_state['negaposi_count'] = []
     st.session_state['10_emotion'] = []
-
+    st.session_state['negaposi_array'] = []
+    st.session_state['10_emotion_array'] = []
+    st.session_state['file_name'] = []
 
 # メインコルーチン関数
 async def main():
     st.set_page_config(page_title="Twitter 感情分類アプリ", page_icon="🌟", layout='wide')
     st.header('Twitter　感情分類アプリ')
-    # st.caption('ツイートを取得して感情分類を行い、ユーザーが選択した感情のツイートを表示します')
-
-
 
 ############ サイドバー検索フォーム ##############
 
     with st.sidebar.form(key='search_form2'):
-        st.markdown("## Twitter 感情分類アプリ")
+        # st.markdown("## Twitter 感情分類アプリ")
         side_search_word = st.text_input('キーワードを入力', 'コロナ')
         # side_search_tweet_negaposi_count = st.number_input('検索ツイート数 (最大500件)', min_value=50, max_value=500, step=10)
         side_tweet_date = st.date_input('日付 (1週間以内)',
@@ -50,9 +68,7 @@ async def main():
         col = st.columns(2)  # ボタンを横並びにするために設定
         sidebar_search_button_pressed = col[0].form_submit_button('検索')
         sidebar_cancel_button_pressed = col[1].form_submit_button('キャンセル', on_click=reset_clicks)
-        # search_button_pressed = st.form_submit_button('検索')
-        # cancel_button_pressed = st.form_submit_button('キャンセル')
-        
+
         
 
 
@@ -113,10 +129,10 @@ OR検索したい場合はORで区切って入力（例：コロナ OR オミク
 
 
         # ツイートの検索・キャンセルボタン
-        col = st.columns(8)  # ボタンを横並びにするために設定
+        col = st.columns(9)  # ボタンを横並びにするために設定
         search_button_pressed = col[0].form_submit_button('検索')
         cancel_button_pressed = col[1].form_submit_button('キャンセル', on_click=reset_clicks)
-        sentiment_analysis_button = col[7].form_submit_button('感情分析')
+        sentiment_analysis_button = col[2].form_submit_button('感情分析')
         uploaded_files = st.file_uploader('CSVファイルをアップロード', type=['csv'], accept_multiple_files=True)
         # search_button_pressed = st.form_submit_button('検索')
         # cancel_button_pressed = st.form_submit_button('キャンセル')
@@ -173,9 +189,15 @@ OR検索したい場合はORで区切って入力（例：コロナ OR オミク
             # st.area_chart(df2)
             col[1].bar_chart(df2)
 
+            
+
+
+
+
             # 取得したツイートの感情分析結果の表示
             st.markdown("---")  #区切り線
             st.subheader(f'{search_word}の感情分類結果')
+
             df = pd.read_csv('/Users/soeyamashunsuke/Desktop/streamlit/data/TextSplit_%s.csv' % tweet_date)
             # st.dataframe(df) 
             st.table(df)
@@ -206,7 +228,7 @@ OR検索したい場合はORで区切って入力（例：コロナ OR オミク
                 TextSplit.radio_button = side_radio_button
                 TextSplit.main()
                 print('感情分類できないツイートの除去完了')
-                st.success("Success!")
+                # st.success("Success!")
                 # st.snow()  # 雪を降らせる
             
 
@@ -238,6 +260,7 @@ OR検索したい場合はORで区切って入力（例：コロナ OR オミク
         df = pd.read_csv('/Users/soeyamashunsuke/Desktop/streamlit/data/TextSplit_%s.csv' % side_tweet_date)
         # st.dataframe(df) 
         st.table(df)
+
     elif sidebar_search_button_pressed:
         st.sidebar.error('エラー：入力内容が不足しています')
 
@@ -257,9 +280,13 @@ OR検索したい場合はORで区切って入力（例：コロナ OR オミク
                 UploadedFile.file_name = file.name.lstrip('twitterAPI_')
                 UploadedFile.main()
         
-        print(st.session_state['10_emotion'])
+        st.success("Success!")
 
-        # グラフの表示(テスト)        
+        print('10種類の感情', st.session_state['10_emotion'])
+        print('ネガポジ分析', st.session_state['negaposi_count'])
+        print('10種類の感情配列', st.session_state['10_emotion_array'])
+        print('ネガポジ分析配列', st.session_state['negaposi_array'])
+        # グラフの表示       
         st.markdown("---")  #区切り線    
         st.subheader('アップロードした全てのファイルの感情分布')
         df2 = pd.DataFrame(st.session_state['10_emotion'], columns=['10種類の感情分析'], index=['喜', '安', '好', '昂', '怖', '驚', '怒', '厭', '恥', '哀'])
@@ -280,8 +307,24 @@ OR検索したい場合はORで区切って入力（例：コロナ OR オミク
         # st.area_chart(df2)
         col[1].bar_chart(df2)
 
+        # グラフのindexをファイル名の日付で表示
+        index_name = []
+        for name in st.session_state['file_name']:
+            index_name += [name]
 
+        st.markdown("---")  #区切り線    
+        st.subheader('日別の感情変化')
+        df3 = pd.DataFrame(st.session_state['negaposi_array'],
+        columns=['概ねネガティブ', '概ねポジティブ', 'ネガティブ', 'ニュートラル', 'ポジティブ'],
+        index=index_name
+        )
+        st.bar_chart(df3)
+        # print(st.session_state['file_name'][0])
+        print(index_name)
 
+        reset_clicks()
+
+   
 
 
 ########### キャンセルボタン ############

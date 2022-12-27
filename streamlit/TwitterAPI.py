@@ -1,5 +1,5 @@
-import tweepy
 import streamlit as st
+import tweepy
 import csv
 from collections import namedtuple
 from datetime import timedelta # 日本時間に直すために使用
@@ -54,9 +54,8 @@ def fetch_tweet():
 
             print(datetime)
 
-        writer = csv.writer(f,  lineterminator="\n")
+        writer = csv.writer(f, lineterminator="\n")
         writer.writerow(["text"])
         writer.writerows(tweet_data_list)
 
-        f.close()
 

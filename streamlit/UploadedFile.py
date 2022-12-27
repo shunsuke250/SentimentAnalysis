@@ -8,7 +8,7 @@ csv_data = ''
 
 def main():
 
-    with open('/Users/soeyamashunsuke/Desktop/streamlit/data/%s' % file_name, 'w',encoding='UTF-8') as f:
+    with open('/Users/soeyamashunsuke/Desktop/streamlit/data/%s' % file_name, 'w', encoding='UTF-8') as f:
         
         f.write(csv_data)
 

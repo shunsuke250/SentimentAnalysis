@@ -98,5 +98,8 @@ def uploaded_analysis():
     df_con.to_csv('/Users/soeyamashunsuke/Desktop/streamlit/data/App_%s' % file_name)
     
     # df_con.head()
+    
+    # 1つのファイルを分析完了時にプログレスバーを非表示
+    my_bar.empty()
 
 
