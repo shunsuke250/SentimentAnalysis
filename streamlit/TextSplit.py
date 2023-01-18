@@ -225,7 +225,9 @@ def uploaded_file():
     
     st.session_state['negaposi_count'] = [mostly_negative_count, mostly_positive_count, negative_count, neutral_count, positive_count]
     st.session_state['10_emotion'] = [yorokobi_count, yasu_count, suki_count, takaburi_count, kowa_count, odoroki_count, ikari_count, iya_count, haji_count, aware_count]
-
+    st.session_state['negaposi_array'] += [[mostly_negative_count, mostly_positive_count, negative_count, neutral_count, positive_count]]
+    st.session_state['10_emotion_array'] += [[yorokobi_count, yasu_count, suki_count, takaburi_count, kowa_count, odoroki_count, ikari_count, iya_count, haji_count, aware_count]]
+    st.session_state['file_name'] += [file_name.rstrip('.csv')]
     f.close()
 
 

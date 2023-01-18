@@ -55,7 +55,7 @@ def fetch_tweet():
             print(datetime)
 
         writer = csv.writer(f, lineterminator="\n")
-        writer.writerow(["text"])
+        writer.writerow(["tweet"])
         writer.writerows(tweet_data_list)
 
 
